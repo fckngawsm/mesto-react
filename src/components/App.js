@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "../index.css";
 
@@ -7,35 +7,98 @@ import Main from "../components/Main";
 import Footer from "../components/Footer";
 import PopupWithForm from "../components/PopupWithForm";
 
-// import {handleEditProfileClick} from "../components/Main";
-
-
-let isEditAvatarPopupOpen = false;
-
-function handleEditAvatarClick(){
-  isEditAvatarPopupOpen = !isEditAvatarPopupOpen;
-}
-
-export  function handleEditProfileClick(){
-  console.log('клик!')
-}
-
-function handleAddPlaceClick(popup){
-
-}
-
-export function handleEditProfileClick(){
-  const [isOpen, setIsOpen] = useState(false);
-  onclick
+function editProfileChildren() {
+  return (
+    <>
+      <input
+        id="name"
+        type="text"
+        placeholder="Ваше имя"
+        name="name"
+        className="popup__text popup__text_type_name"
+        defaultValue=""
+        maxLength="40"
+        minLength="2"
+        required
+      />
+      <span id="name_error" className="popup__error ">
+        Вы пропустили это поле.
+      </span>
+      <input
+        id="job"
+        type="text"
+        placeholder="Ваша работа"
+        name="about"
+        className="popup__text popup__text_type_status"
+        defaultValue=""
+        maxLength="200"
+        minLength="2"
+        required
+      />
+      <span id="job_error" className="popup__error ">
+        Вы пропустили это поле.
+      </span>
+      <button className="popup__submit-btn" type="submit">
+        Сохранить
+      </button>
+    </>
+  );
 }
 
 function App() {
+  // редактирование профиля
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState();
+  function handleEditProfileClick() {
+    setIsEditProfilePopupOpen(true);
+  }
+  // добавление новой карточки
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  function handleAddPlaceClick() {
+    setIsAddPlacePopupOpen(true);
+  }
+  // изменение аватарки
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
+  function handleEditAvatarClick() {
+    setIsEditAvatarPopupOpen(true);
+  }
+  // закрытие попапов
+  function closeAllPopups() {
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    console.log("popup is closed!");
+  }
+
   return (
     <div className="page">
-      <Header/>
-      <Main/>
-      <Footer/>
-      <PopupWithForm title = ""  name = " " />
+      <Header />
+      <Main
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onEditAvatar={handleEditAvatarClick}
+      />
+      <Footer />
+      <PopupWithForm
+        onClose={closeAllPopups}
+        children={editProfileChildren()}
+        name={"profile"}
+        isOpen={isEditProfilePopupOpen}
+        title={"Редактировать профиль"}
+      />
+      <PopupWithForm
+        onClose={closeAllPopups}
+        name={"add"}
+        isOpen={isAddPlacePopupOpen}
+        title={"Новое место"}
+      />
+      <PopupWithForm
+        onClose={closeAllPopups}
+        name={"avatar"}
+        isOpen={isEditAvatarPopupOpen}
+        title={"Обновить фотографию"}
+      />
+      {/* <PopupWithForm name={"profile"} isOpen={isEditProfilePopupOpen} title ={'Редактировать профиль'} /> */}
       {/* <div className="popup popup_type_profile">
         <div className="popup__content">
           <button

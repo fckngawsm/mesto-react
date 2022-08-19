@@ -9,27 +9,31 @@ import PopupWithForm from "../components/PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
-  // редактирование профиля
+  // state
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
+  React.useState(false);
+  //
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  //
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+  React.useState(false);
+  //
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null);
+
+  // редактирование профиля
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
   // добавление новой карточки
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
   // изменение аватарки
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
   // закрытие попапов
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
-
   function closeAllPopups() {
     setIsImagePopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -65,6 +69,7 @@ function App() {
         name={"profile"}
         isOpen={isEditProfilePopupOpen}
         title={"Редактировать профиль"}
+        buttonText = {"Сохранить"}
       >
         <input
           id="name"
@@ -94,9 +99,6 @@ function App() {
         <span id="job_error" className="popup__error ">
           Вы пропустили это поле.
         </span>
-        <button className="popup__submit-btn" type="submit">
-          Сохранить
-        </button>
       </PopupWithForm>
       {/* Попап для добавления карточки */}
       <PopupWithForm
@@ -104,6 +106,7 @@ function App() {
         name={"add"}
         isOpen={isAddPlacePopupOpen}
         title={"Новое место"}
+        buttonText = {"Сохранить"}
       >
         <input
           id="title-input"
@@ -131,9 +134,6 @@ function App() {
         <span id="source-input_error" className="popup__error">
           Ошибка!
         </span>
-        <button className="popup__submit-btn" type="submit">
-          Сохранить
-        </button>
       </PopupWithForm>
       {/* попап для обновления аватарки */}
       <PopupWithForm
@@ -141,6 +141,7 @@ function App() {
         name={"avatar"}
         isOpen={isEditAvatarPopupOpen}
         title={"Обновить аватар"}
+        buttonText = {"Сохранить"}
       >
         <input
           id="avatar-input"
@@ -153,12 +154,6 @@ function App() {
         <span id="avatar-input_error" className="popup__error">
           Ошибка!
         </span>
-        <button
-          type="submit"
-          className="popup__submit-btn popup__submit-btn_avatar"
-        >
-          Сохранить
-        </button>
       </PopupWithForm>
       <ImagePopup
         card={selectedCard}

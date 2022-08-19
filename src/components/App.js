@@ -6,11 +6,12 @@ import Header from "../components/Header";
 import Main from "../components/Main";
 import Footer from "../components/Footer";
 import PopupWithForm from "../components/PopupWithForm";
-
+import ImagePopup from "./ImagePopup";
 
 function App() {
   // редактирование профиля
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState();
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -27,10 +28,19 @@ function App() {
   }
   // закрытие попапов
   function closeAllPopups() {
+    setIsImagePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setSelectedCard(null);
     console.log("popup is closed!");
+  }
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null);
+
+  function handleCardClick(card) {
+    setIsImagePopupOpen(true)
+    setSelectedCard(card);
   }
   return (
     <div className="page">
@@ -39,6 +49,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
       {/* попап редактирования профиля */}
       <PopupWithForm
@@ -141,6 +152,11 @@ function App() {
           Сохранить
         </button>
       </PopupWithForm>
+      <ImagePopup
+        card={selectedCard}
+        onClose={closeAllPopups}
+        isOpen={isImagePopupOpen}
+      />
       <Footer />
       <div className="popup popup_type_image">
         <div className="popup__content-image">
@@ -156,19 +172,6 @@ function App() {
           <p className="popup__description-image"></p>
         </div>
       </div>
-      {/* <template className="template-element">
-        <div className="element">
-          <img className="element__image" src="#" alt="" />
-          <div className="element__info">
-            <h2 className="element__title"></h2>
-            <div className="element__like-row">
-              <button className="element__like" type="button"></button>
-              <p className="element__like-count">0</p>
-            </div>
-          </div>
-          <button type="button" className="element__delete"></button>
-        </div>
-      </template> */}
     </div>
   );
 }

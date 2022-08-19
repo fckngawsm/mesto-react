@@ -68,7 +68,7 @@ export default function Main(props) {
         </section>
 
           <section className="elements">
-            {cards.map((card) => (<Card card={card} key={card.id}/>))}
+            {cards.map((card) => (<Card card={card} key={card.id} onCardClick={props.onCardClick}/>))}
           </section>
       </main>
     </>

@@ -4,7 +4,7 @@ export default function imagePopup(props) {
   return (
     <div
       className={`popup popup_type_image ${
-        props.card ? "popup_is-opened" : ""
+        props.isOpen ? "popup_is-opened" : ""
       }`}
     >
       <div className="popup__content-image">

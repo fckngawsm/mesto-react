@@ -27,19 +27,27 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
   // закрытие попапов
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null);
+
   function closeAllPopups() {
     setIsImagePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setSelectedCard(null);
-    console.log("popup is closed!");
+    // setSelectedCard(null);
   }
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  // чтобы не схлопаывалась картинка!
+  React.useEffect(()=>{
+    if(!isImagePopupOpen){
+      setTimeout(()=>{
+        setSelectedCard(null)
+      },400 )
+    }
+  },[isImagePopupOpen])
 
   function handleCardClick(card) {
-    setIsImagePopupOpen(true)
+    setIsImagePopupOpen(true);
     setSelectedCard(card);
   }
   return (
@@ -158,20 +166,6 @@ function App() {
         isOpen={isImagePopupOpen}
       />
       <Footer />
-      <div className="popup popup_type_image">
-        <div className="popup__content-image">
-          <button
-            className="popup__close  popup__close-image"
-            type="button"
-          ></button>
-          <img
-            className="popup__photo-image"
-            src="<%=require('./images/dog.avif')%>"
-            alt="картинка"
-          />
-          <p className="popup__description-image"></p>
-        </div>
-      </div>
     </div>
   );
 }

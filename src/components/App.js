@@ -38,13 +38,13 @@ function App() {
     // setSelectedCard(null);
   }
   // чтобы не схлопаывалась картинка!
-  React.useEffect(()=>{
-    if(!isImagePopupOpen){
-      setTimeout(()=>{
-        setSelectedCard(null)
-      },400 )
+  React.useEffect(() => {
+    if (!isImagePopupOpen) {
+      setTimeout(() => {
+        setSelectedCard(null);
+      }, 400);
     }
-  },[isImagePopupOpen])
+  }, [isImagePopupOpen]);
 
   function handleCardClick(card) {
     setIsImagePopupOpen(true);

@@ -38,7 +38,6 @@ export default function Main(props) {
   }, []);
 
   return (
-    <>
       <main className="main">
         <section className="profile">
           <div className="profile__column">
@@ -71,6 +70,5 @@ export default function Main(props) {
             {cards.map((card) => (<Card card={card} key={card.id} onCardClick={props.onCardClick}/>))}
           </section>
       </main>
-    </>
   );
 }

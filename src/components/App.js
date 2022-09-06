@@ -8,6 +8,7 @@ import Main from "../components/Main";
 import Footer from "../components/Footer";
 import PopupWithForm from "../components/PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
 
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -21,9 +22,9 @@ function App() {
         return data.map((item) => ({
           name: item.name,
           link: item.link,
-          likes: item.likes.length,
-          id: item._id,
-          owner:item.owner
+          likes: item.likes,
+          _id: item._id,
+          owner: item.owner,
         }));
       })
       .then((cards) => setCards(cards))
@@ -83,6 +84,52 @@ function App() {
     setIsImagePopupOpen(true);
     setSelectedCard(card);
   }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    if (!isLiked) {
+      api
+        .setLike(card._id)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      api
+        .deleteLike(card._id)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }
+
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card)
+      .then(() => {
+        setCards((cards) => cards.filter((c) => c._id !== card._id));
+      })
+      .catch((err) => console.log(err));
+    console.log("delete!");
+  }
+
+  function handleUpdateUser(data) {
+    api
+      .updateUserInfo(data)
+      .then((res) => setCurrentUser(res))
+      .catch((err) => console.log(err))
+      .finally(() => closeAllPopups());
+  }
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -92,45 +139,16 @@ function App() {
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
           cards={cards}
         />
         {/* попап редактирования профиля */}
-        <PopupWithForm
-          onClose={closeAllPopups}
-          name={"profile"}
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
-          title={"Редактировать профиль"}
-          buttonText={"Сохранить"}
-        >
-          <input
-            id="name"
-            type="text"
-            placeholder="Ваше имя"
-            name="name"
-            className="popup__text popup__text_type_name"
-            defaultValue=""
-            maxLength="40"
-            minLength="2"
-            required
-          />
-          <span id="name_error" className="popup__error ">
-            Вы пропустили это поле.
-          </span>
-          <input
-            id="job"
-            type="text"
-            placeholder="Ваша работа"
-            name="about"
-            className="popup__text popup__text_type_status"
-            defaultValue=""
-            maxLength="200"
-            minLength="2"
-            required
-          />
-          <span id="job_error" className="popup__error ">
-            Вы пропустили это поле.
-          </span>
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
         {/* Попап для добавления карточки */}
         <PopupWithForm
           onClose={closeAllPopups}

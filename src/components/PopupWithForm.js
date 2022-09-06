@@ -13,7 +13,7 @@ export default function PopupWithForm(props) {
           className="popup__close"
           onClick={props.onClose}
         />
-        <form className="popup__form" name="form-edit" noValidate>
+        <form className="popup__form" name="form-edit" onSubmit={props.onSubmit} noValidate>
           <fieldset className="popup__information">
             <h2 className="popup__title">{props.title}</h2>
             {props.children}

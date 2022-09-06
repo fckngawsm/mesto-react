@@ -47,7 +47,9 @@ export default function Main(props) {
           <Card
             key={card._id}
             card={card}
+            onCardLike={props.onCardLike}
             onCardClick={props.onCardClick}
+            onCardDelete={props.onCardDelete}
           />
         ))}
       </section>

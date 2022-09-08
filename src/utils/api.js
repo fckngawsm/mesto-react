@@ -61,8 +61,8 @@ class Api {
   }
 
   //удаляем карточку
-  deleteCard(cardID) {
-    return fetch(`${this._url}/cards/${cardID}`, {
+  deleteCard(card) {
+    return fetch(`${this._url}/cards/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => this._checkServerAnswer(res));

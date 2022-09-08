@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import api from "../utils/api";
+import React from "react";
 import plus from "../images/plus.svg";
 
 import Card from "./Card";

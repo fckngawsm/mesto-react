@@ -15,9 +15,9 @@ export default function AddPlacePopup(props) {
     props.onAddPlace({ name, link });
   }
   React.useEffect(() => {
-    setName('');
-    setLink('');
-  }, [props.isOpen])
+    setName("");
+    setLink("");
+  }, [props.isOpen]);
   return (
     <PopupWithForm
       onClose={props.onClose}
@@ -33,7 +33,7 @@ export default function AddPlacePopup(props) {
         placeholder="Название"
         name="name"
         className="popup__text popup__text_type_name"
-        defaultValue=""
+        value={name}
         maxLength="30"
         minLength="2"
         onChange={handleChangeName}
@@ -48,7 +48,7 @@ export default function AddPlacePopup(props) {
         placeholder="Ссылка на картинку"
         name="link"
         className="popup__text popup__text_type_status"
-        defaultValue=""
+        value={link}
         onChange={handleChangeDescription}
         required
       />

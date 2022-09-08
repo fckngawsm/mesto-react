@@ -23,15 +23,6 @@ function App() {
   React.useEffect(() => {
     api
       .getInitialCards()
-      .then((data) => {
-        return data.map((item) => ({
-          name: item.name,
-          link: item.link,
-          likes: item.likes,
-          _id: item._id,
-          owner: item.owner,
-        }));
-      })
       .then((cards) => setCards(cards))
       .catch((err) => console.log(err));
   }, []);
@@ -76,6 +67,26 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
   }
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard;
+
+  React.useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
+
   // чтобы не схлопаывалась картинка!
   React.useEffect(() => {
     if (!isImagePopupOpen) {
@@ -131,24 +142,24 @@ function App() {
     api
       .updateAvatar(data)
       .then((res) => setCurrentUser(res))
-      .catch((err) => console.log(err))
-      .finally(() => closeAllPopups());
+      .then(() => closeAllPopups())
+      .catch((err) => console.log(err));
   }
 
   function handleUpdateUser(data) {
     api
       .updateUserInfo(data)
       .then((res) => setCurrentUser(res))
-      .catch((err) => console.log(err))
-      .finally(() => closeAllPopups());
+      .then(() => closeAllPopups())
+      .catch((err) => console.log(err));
   }
 
   function handleAddPlaceSubmit(data) {
     api
       .sendCard(data)
       .then((newCard) => setCards([newCard, ...cards]))
-      .catch((err) => console.log(err))
-      .finally(() => closeAllPopups());
+      .then(() => closeAllPopups())
+      .catch((err) => console.log(err));
   }
   return (
     <CurrentUserContext.Provider value={currentUser}>
